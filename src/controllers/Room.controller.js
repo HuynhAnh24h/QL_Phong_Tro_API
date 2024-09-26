@@ -74,11 +74,11 @@ module.exports = {
         try{
             const queries = {...req.query}
 
-            // tách các trường đặc biệt ra khỏi query 
+            // TÁCH CÁC TRƯỜNG ĐẶC BIỆT RA KHỎI QUERY
             const excludeFields = ['limits','sort','page','fields']
             excludeFields.forEach(element => delete queries[element])
 
-            // Format lại các toán tử cho đúng cú pháp với mongodb
+            // FORMAT LẠI TOÁN TỬ CHO ĐÚNG VỚI MONGODB
             let queryString = JSON.stringify(queries)
             queryString = queryString.replace(/\b(gte|gt|li|lte)\b/g, matchElement =>`$${matchElement}`)
             const formatedQuery =JSON.parse(queryString)
@@ -89,22 +89,33 @@ module.exports = {
             }
             let queryCommand = RoomModel.find(formatedQuery)
 
-            //SORTING
-            if(req.body.sort){
-                const sortBy = req.query.rort.split(',').join(' ')
+            // SORTING
+            if(req.query.sort){
+                const sortBy = req.query.sort.split(',').join(' ')
                 queryCommand = queryCommand.sort(sortBy)
             }
 
-            // EXECUTE QUERY
-            // Số lượng sp thoả mãn điều kiện != số lượng sản phẩm trả về 1 lần gọi API   
+            // LIMITS 
+            if(req.query.fields){
+                const fields = req.query.fields.split(',').join(' ')
+                queryCommand = queryCommand.select(fields)
+            }
 
+            // PAGINATION
+            // Chuyển từ dạng chuỗi sang dạng số
+            const page = +req.query.page || 1
+            const limit = +req.query.limit || process.env.LIMIT_PRODUCT
+            const skip = (page-1)*limit
+            queryCommand.skip(skip).limit(limit)
+            // EXECUTE QUERY
+            // SỐ LƯỢNG SP THOẢ MÃN ĐIỀU KIỆN != SỐ LƯỢNG SẢN PHẨM TRẢ VỀ SAU MỖI LẦN GỌI API  
             queryCommand.exec()
             .then(async response => {
                 const counts = await RoomModel.find(formatedQuery).countDocuments()
                 return res.status(200).json({
                     success: response ? true : false,
+                    count: counts,
                     data: response ? response : "No data",
-                    count: counts
                 })
             })
             .catch(err =>{
