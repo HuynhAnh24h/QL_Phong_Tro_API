@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const HouseSchema = mongoose.Schema({
+const BrandSchema = mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -7,6 +7,7 @@ const HouseSchema = mongoose.Schema({
         index: true
     }
 },{
-    timestamps: true
+    timestamps: true,
+    versionKey: false
 })
-module.exports = mongoose.model('Houses', HouseSchema)
+module.exports = mongoose.model('Brand',BrandSchema)

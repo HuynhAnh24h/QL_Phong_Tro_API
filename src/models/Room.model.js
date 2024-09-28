@@ -23,6 +23,10 @@ const RoomSchema = mongoose.Schema({
         required: true
     },
     // CATEGORY
+    house: {
+        type: mongoose.Types.ObjectId,
+        ref: "House"
+    },
     status: {
         type: String,
         enum: ['active','warning','noactive'],
@@ -38,4 +42,4 @@ const RoomSchema = mongoose.Schema({
     vesionKey: false
 })
 
-module.exports = mongoose.model('Room',RoomSchema)
+module.exports = mongoose.model('Rooms',RoomSchema)
