@@ -107,6 +107,7 @@ module.exports = {
             const limit = +req.query.limit || process.env.LIMIT_PRODUCT
             const skip = (page-1)*limit
             queryCommand.skip(skip).limit(limit)
+            
             // EXECUTE QUERY
             // SỐ LƯỢNG SP THOẢ MÃN ĐIỀU KIỆN != SỐ LƯỢNG SẢN PHẨM TRẢ VỀ SAU MỖI LẦN GỌI API  
             queryCommand.exec()

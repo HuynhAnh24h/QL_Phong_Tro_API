@@ -1,10 +1,8 @@
 const UserModel = require('../models/User.model')
-const bcrypt = require('bcrypt')
 const { generateAccessToken, generateRefreshToken } = require('../middlewares/Jwt.middleware')
 const {sendMail} = require('../ultils/SendEmail')
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto')
-const { response } = require('express')
 module.exports = {
     // Tạo tài khoản người dùng
     createUser: async (req,res) =>{

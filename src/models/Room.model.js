@@ -15,18 +15,14 @@ const RoomSchema = mongoose.Schema({
         required: true,
     },
     brand:{
-        type: String,
-        required: true
+        type: mongoose.Types.ObjectId,
+        ref: 'Brand'
     },
     price:{
         type: Number,
         required: true
     },
     // CATEGORY
-    house:{
-        type: mongoose.Types.ObjectId,
-        ref: 'House'
-    },
     status: {
         type: String,
         enum: ['active','warning','noactive'],
@@ -36,15 +32,6 @@ const RoomSchema = mongoose.Schema({
     imageRoom: {
         type: Array,
     },
-    contract:{
-        type: mongoose.Types.ObjectId,
-        ref: 'Contract'
-    },
-    // SỐ PHÒNG ĐÃ CÓ NGƯỜI THUÊ
-    sold:{
-        type: Number,
-        default: 0
-    }
 
 },{
     timestamps: true,
