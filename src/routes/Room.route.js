@@ -1,8 +1,22 @@
 const express = require('express')
 const router = express.Router()
-const {verifyAccessToken, isAdmin} = require('../middlewares/VerifyToken.middleware')
-const { createRoom, getAllRoom, updateRoom, deleteRoom, getRoom } = require('../controllers/Room.controller')
 
+// IMPORT CONTROLLER
+const { 
+    createRoom, 
+    getAllRoom, 
+    updateRoom, 
+    deleteRoom, 
+    getRoom 
+} = require('../controllers/Room.controller')
+
+// IMPORT MIDDLEWAERE
+const {
+    verifyAccessToken, 
+    isAdmin
+} = require('../middlewares/VerifyToken.middleware')
+
+// USING ROUTER
 router.post('/create-room',[verifyAccessToken,isAdmin],createRoom)
 router.get('/get-all-rooms',[verifyAccessToken],getAllRoom)
 router.put('/update-room/:rid',[verifyAccessToken, isAdmin], updateRoom)

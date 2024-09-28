@@ -35,7 +35,7 @@ module.exports = {
     },
 
     // UPDATE
-    updateBrand: async () =>{
+    updateBrand: async (req,res) =>{
         try{
             const {bid} = req.params
             if(!bid || Object.keys(req.body).length === 0){
@@ -49,6 +49,24 @@ module.exports = {
             return res.status(200).json({
                 success: updateBrand ? true : false,
                 message: updateBrand ? "Update success" : "Update Fail"
+            })
+
+        }catch(err){
+            return res.status(500).json({
+                success: false,
+                message: err.message
+            })
+        }
+    },
+
+    // DELETE 
+    deleteBrand: async () =>{
+        try{
+            const {bid} = req.params
+            const deleteBrand = await BrandModel.findByIdAndDelete(bid)
+            return res.status(200).json({
+                success: deleteBrand ? true : false,
+                message: deleteBrand ? "Delete Success" : "Delete Fail !"
             })
 
         }catch(err){
